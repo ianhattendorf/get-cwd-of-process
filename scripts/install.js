@@ -11,10 +11,14 @@ const die = (msg) => {
   process.exit(1);
 };
 
+const vsVersion = '2019';
 const getMSBuild = async () => {
   try {
-    return (await findVisualStudio(null, '2017')).msBuild;
+    const nodeVersionArray = process.versions.node.split('.');
+    const nodeVersion = { major: nodeVersionArray[0], minor: nodeVersionArray[1], patch: nodeVersionArray[2] };
+    return (await findVisualStudio(nodeVersion, vsVersion)).msBuild;
   } catch (error) {
+    console.log(`Error finding VS ${vsVersion}:`, error);
     return '';
   }
 };
